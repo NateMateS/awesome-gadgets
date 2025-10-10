@@ -19,6 +19,10 @@ Categorized lists of found useful software, tools, helpers, things.
 
 ---
 
+## Web Builders
+* **Lovable** — https://lovable.dev/
+* **Chef** — https://chef.convex.dev/
+
 ## CLI Tools
 
 * **Claude Code** — https://github.com/anthropics/claude-code
@@ -34,6 +38,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Warp** — https://www.warp.dev/
 * **Augment** — https://www.augmentcode.com/product/CLI
 * **SourceGraph Amp (CLI)** — https://ampcode.com/
+* **Codebuff** — https://www.codebuff.com/
 
 ## Editors & IDEs
 
@@ -57,10 +62,14 @@ Categorized lists of found useful software, tools, helpers, things.
 * **SourceGraph Amp (Extension)** — https://ampcode.com/
 * **Zencoder** — https://zencoder.ai/
 * **Cubent** — https://cubent.dev/
+* **Superdesign** — https://www.superdesign.dev/
 
 ## Productivity & Utilities & Helpers
 
 * **Repo Prompt (MAC ONLY!)** — https://repoprompt.com/
+* **DeepWiki** — https://deepwiki.org/
+* **DeepWiki MD Export** — https://github.com/zxmfke/deepwiki-md-chrome-extension
+* 
 
 ## Experimental / Other
 
