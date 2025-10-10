@@ -27,6 +27,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Crush CLI** — https://github.com/charmbracelet/crush
 * **Qwen-Code** — https://github.com/QwenLM/qwen-code
 * **Open-Code** — https://github.com/sst/opencode
+* **AIDER** — https://aider.chat/docs/install.html
 * **Rovo Dev** — https://support.atlassian.com/rovo/docs/use-rovo-dev-cli/
 * **Forge** — https://forgecode.dev/
 * **Github Copilot CLI** — https://github.com/github/copilot-cli
@@ -49,6 +50,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Cline** — https://github.com/cline/cline
 * **Kilo** — https://github.com/Kilo-Org/kilocode
 * **Roo** — https://github.com/RooCodeInc/Roo-Code
+* **AIDER (Third Party)** — https://github.com/lee88688/aider-composer
 * **Rovo Dev** — https://support.atlassian.com/rovo/docs/work-with-rovo-dev-in-the-ide/
 * **Qodo Gen (Codium)** — https://marketplace.visualstudio.com/items?itemName=Codium.codium
 * **Refact.AI** — https://github.com/smallcloudai/refact
