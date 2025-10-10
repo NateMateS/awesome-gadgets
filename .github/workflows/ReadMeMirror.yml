@@ -66,6 +66,7 @@ jobs:
           CHUNKS=()
           CHUNK=""
           while IFS= read -r LINE || [ -n "$LINE" ]; do
+            # Always quote expansions!
             if [ $(( ${#CHUNK} + ${#LINE} + 1 )) -ge 1900 ]; then
               CHUNKS+=("$CHUNK")
               CHUNK="$LINE"
@@ -77,7 +78,7 @@ jobs:
               fi
             fi
           done < README.md
-          # Add last chunk
+          # Add last chunk if it's not empty
           if [ -n "$CHUNK" ]; then
             CHUNKS+=("$CHUNK")
           fi
@@ -123,7 +124,7 @@ jobs:
               curl -s -X DELETE "$BASE/messages/$MSGID"
             done
           fi
-          
+
           printf "%s\n" "${NEW_IDS[@]}" > .discord_message_ids
           echo "new_msgids=$(IFS=,; echo "${NEW_IDS[*]}")" >> "$GITHUB_OUTPUT"
 
