@@ -58,14 +58,12 @@ jobs:
           set -e
           BASE="https://discord.com/api/webhooks/${{ steps.wb.outputs.id }}/${{ steps.wb.outputs.token }}"
           echo "Using webhook base: $BASE"
-          CONTENT="${{ steps.read.outputs.content }}"
-          LEN="${{ steps.read.outputs.length }}"
           OLD="${{ steps.load.outputs.msgid }}"
 
-          # Prepare JSON payload safely
-          # Use printf to avoid unexpected word splitting or shell interpretation
-          SAFE_CONTENT=$(printf "%s" "$CONTENT")
-          JSON=$(jq -n --arg c "```$SAFE_CONTENT```" '{ content: $c }')
+          # Read README.md content directly
+          SAFE_CONTENT=$(cat README.md)
+          # Wrap in triple backticks for Discord code block
+          JSON=$(jq -n --arg c "```${SAFE_CONTENT}```" '{ content: $c }')
           echo "Payload for Discord: $JSON"
 
           if [ -n "$OLD" ]; then
