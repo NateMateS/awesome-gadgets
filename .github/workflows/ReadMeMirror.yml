@@ -56,39 +56,46 @@ jobs:
         id: discord
         run: |
           set -euo pipefail
-          
+
           BASE="https://discord.com/api/webhooks/${{ steps.wb.outputs.id }}/${{ steps.wb.outputs.token }}"
           OLD_IDS=()
           if [ -f .discord_message_ids ]; then
             mapfile -t OLD_IDS < .discord_message_ids
           fi
-          
+
           if [ ! -f README.md ]; then
             echo "ERROR: README.md not found!"
             exit 2
           fi
-          
-          # Safely split README.md into 1900-character chunks (do not execute or source its content)
+
+          # Read README.md safely as pure text
           CONTENT=$(cat README.md)
+
+          # Split into 1900-character chunks (do NOT execute or source the file)
           CHUNKS=()
           while [ "${#CONTENT}" -gt 0 ]; do
             CHUNKS+=( "${CONTENT:0:1900}" )
             CONTENT="${CONTENT:1900}"
           done
-          
-          # Print chunk information for debugging
+
+          # Print chunk info for debugging
           echo "Split README.md into ${#CHUNKS[@]} chunks."
           for i in "${!CHUNKS[@]}"; do
             echo "Chunk $i length: ${#CHUNKS[$i]}"
             echo "Chunk $i preview: $(echo "${CHUNKS[$i]}" | head -n 2)"
           done
-          
+
           NEW_IDS=()
           NUM_CHUNKS=${#CHUNKS[@]}
           NUM_OLD=${#OLD_IDS[@]}
-          
+
           for IDX in $(seq 0 $((NUM_CHUNKS-1))); do
             CHUNK="${CHUNKS[$IDX]}"
+            # Only post non-empty chunks
+            if [ -z "$(echo "$CHUNK" | tr -d '[:space:]')" ]; then
+              echo "Skipping empty chunk $IDX"
+              continue
+            fi
             JSON=$(jq -c -n --arg c "```${CHUNK}```" '{ content: $c }')
             echo "Posting chunk $IDX to Discord (length: ${#CHUNK})..."
 
