@@ -30,6 +30,8 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Rovo Dev** — https://support.atlassian.com/rovo/docs/use-rovo-dev-cli/
 * **Forge** — https://forgecode.dev/
 * **Github Copilot CLI** — https://github.com/github/copilot-cli
+* **Warp** — https://www.warp.dev/
+* **Augment** — https://www.augmentcode.com/product/CLI
 
 ## Editors & IDEs
 
@@ -42,11 +44,13 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Codex** — https://marketplace.visualstudio.com/items?itemName=openai.chatgpt
 * **Github Copilot** — https://github.com/microsoft/vscode-copilot-chat
 * **Continue** — https://github.com/continuedev/continue
+* **Augment** — https://www.augmentcode.com/
 * **Cline** — https://github.com/cline/cline
 * **Kilo** — https://github.com/Kilo-Org/kilocode
 * **Roo** — https://github.com/RooCodeInc/Roo-Code
 * **Rovo Dev** — https://support.atlassian.com/rovo/docs/work-with-rovo-dev-in-the-ide/
 * **Qodo Gen (Codium)** — https://marketplace.visualstudio.com/items?itemName=Codium.codium
+* **Refact.AI** — https://github.com/smallcloudai/refact
 
 ## Productivity & Utilities & Helpers
 
