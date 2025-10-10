@@ -52,20 +52,20 @@ jobs:
             echo "msgid=" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Post or patch messages (chunked)
+            - name: Post or patch messages (chunked)
         id: discord
         run: |
           set -e
           BASE="https://discord.com/api/webhooks/${{ steps.wb.outputs.id }}/${{ steps.wb.outputs.token }}"
-          OLD_IDS=""
+          OLD_IDS=()
           if [ -f .discord_message_ids ]; then
-            OLD_IDS=$(cat .discord_message_ids)
+            mapfile -t OLD_IDS < .discord_message_ids
           fi
 
           # Split README.md into 1900-char chunks, preserving lines
           CHUNKS=()
           CHUNK=""
-          while IFS= read -r LINE; do
+          while IFS= read -r LINE || [ -n "$LINE" ]; do
             if [ $(( ${#CHUNK} + ${#LINE} + 1 )) -ge 1900 ]; then
               CHUNKS+=("$CHUNK")
               CHUNK="$LINE"
@@ -82,20 +82,15 @@ jobs:
             CHUNKS+=("$CHUNK")
           fi
 
-          # Loop through chunks and post/patch as needed
           NEW_IDS=()
-          OLD_IDS_ARR=()
-          IFS=$'\n' read -d '' -r -a OLD_IDS_ARR <<< "$OLD_IDS"
           NUM_CHUNKS=${#CHUNKS[@]}
-          NUM_OLD=${#OLD_IDS_ARR[@]}
+          NUM_OLD=${#OLD_IDS[@]}
 
           for IDX in $(seq 0 $((NUM_CHUNKS-1))); do
             CHUNK="${CHUNKS[$IDX]}"
-            # Wrap in triple backticks for code formatting
             JSON=$(jq -n --arg c "```${CHUNK}```" '{ content: $c }')
-            if [ $IDX -lt $NUM_OLD ] && [ -n "${OLD_IDS_ARR[$IDX]}" ]; then
-              MSGID="${OLD_IDS_ARR[$IDX]}"
-              # PATCH existing message
+            if [ $IDX -lt $NUM_OLD ] && [ -n "${OLD_IDS[$IDX]}" ]; then
+              MSGID="${OLD_IDS[$IDX]}"
               RESP=$(curl -s -X PATCH \
                 -H "Content-Type: application/json" \
                 -d "$JSON" \
@@ -104,7 +99,6 @@ jobs:
               if [ -n "$NEWID" ]; then
                 NEW_IDS+=("$NEWID")
               else
-                # PATCH failed, POST as new
                 RESP=$(curl -s -X POST \
                   -H "Content-Type: application/json" \
                   -d "$JSON" \
@@ -113,7 +107,6 @@ jobs:
                 NEW_IDS+=("$NEWID")
               fi
             else
-              # POST new message
               RESP=$(curl -s -X POST \
                 -H "Content-Type: application/json" \
                 -d "$JSON" \
@@ -123,15 +116,14 @@ jobs:
             fi
           done
 
-          # Delete any extra old messages (if README shrank)
+          # Delete any extra old messages
           if [ $NUM_OLD -gt $NUM_CHUNKS ]; then
             for IDX in $(seq $NUM_CHUNKS $((NUM_OLD-1))); do
-              MSGID="${OLD_IDS_ARR[$IDX]}"
+              MSGID="${OLD_IDS[$IDX]}"
               curl -s -X DELETE "$BASE/messages/$MSGID"
             done
           fi
-
-          # Save new IDs
+          
           printf "%s\n" "${NEW_IDS[@]}" > .discord_message_ids
           echo "new_msgids=$(IFS=,; echo "${NEW_IDS[*]}")" >> "$GITHUB_OUTPUT"
 
