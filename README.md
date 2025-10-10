@@ -52,7 +52,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Rovo Dev** — https://support.atlassian.com/rovo/docs/work-with-rovo-dev-in-the-ide/
 * **Qodo Gen (Codium)** — https://marketplace.visualstudio.com/items?itemName=Codium.codium
 * **Refact.AI** — https://github.com/smallcloudai/refact
-* **SourceGraph Amp (Extension) — https://ampcode.com/
+* **SourceGraph Amp (Extension)** — https://ampcode.com/
 * **Zencoder** — https://zencoder.ai/
 
 ## Productivity & Utilities & Helpers
