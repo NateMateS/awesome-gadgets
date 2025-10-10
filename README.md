@@ -59,7 +59,7 @@ Categorized lists of found useful software, tools, helpers, things.
 
 ## Productivity & Utilities & Helpers
 
-[PLACEHOLDER]
+* **Repo Prompt (MAC ONLY!)** — https://repoprompt.com/
 
 ## Experimental / Other
 
