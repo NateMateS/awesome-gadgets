@@ -4,7 +4,7 @@ Categorized lists of found useful software, tools, helpers, things.
 
 ---
 
-> This repository collects concise entries for interesting developer tools, AI assistants, CLIs, editors, and other useful gadgets. If you have a link, short description (1–2 lines), and a license/author, please open a PR.
+> This repository collects concise entries for interesting developer tools, AI assistants, CLIs, editors, and other useful gadgets. If you think something needs to be added or modified, please open a PR.
 
 ---
 
