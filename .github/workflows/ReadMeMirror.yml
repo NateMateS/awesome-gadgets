@@ -27,7 +27,9 @@ jobs:
           fi
           # escape triple backticks
           ESCAPED=$(sed 's/```/`​`​`/g' README.md)
-          echo "content=$ESCAPED" >> "$GITHUB_OUTPUT"
+          echo "content<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$ESCAPED" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
           LENGTH=$(wc -c < README.md)
           echo "length=$LENGTH" >> "$GITHUB_OUTPUT"
 
