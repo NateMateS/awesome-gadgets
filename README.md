@@ -32,7 +32,7 @@ Categorized lists of found useful software, tools, helpers, things.
 
 ## Editors & IDEs
 
-* **Cursor** — AI-native code editor, workspace-focused (add link + short description).
+* **Cursor** — https://cursor.com/home
 * **Windsurf** — https://windsurf.com/
 * **Trae** — https://www.trae.ai/
 
