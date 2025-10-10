@@ -52,7 +52,7 @@ jobs:
             echo "msgid=" >> "$GITHUB_OUTPUT"
           fi
 
-            - name: Post or patch messages (chunked)
+      - name: Post or patch messages (chunked)
         id: discord
         run: |
           set -e
