@@ -56,6 +56,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Refact.AI** — https://github.com/smallcloudai/refact
 * **SourceGraph Amp (Extension)** — https://ampcode.com/
 * **Zencoder** — https://zencoder.ai/
+* **Cubent** — https://cubent.dev/
 
 ## Productivity & Utilities & Helpers
 
