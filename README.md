@@ -53,6 +53,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Qodo Gen (Codium)** — https://marketplace.visualstudio.com/items?itemName=Codium.codium
 * **Refact.AI** — https://github.com/smallcloudai/refact
 * **SourceGraph Amp (Extension) — https://ampcode.com/
+* **Zencoder** — https://zencoder.ai/
 
 ## Productivity & Utilities & Helpers
 
