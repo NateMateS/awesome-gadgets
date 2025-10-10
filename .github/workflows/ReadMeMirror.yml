@@ -52,65 +52,94 @@ jobs:
             echo "msgid=" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Post or patch message
+      - name: Post or patch messages (chunked)
         id: discord
         run: |
           set -e
           BASE="https://discord.com/api/webhooks/${{ steps.wb.outputs.id }}/${{ steps.wb.outputs.token }}"
-          echo "Using webhook base: $BASE"
-          OLD="${{ steps.load.outputs.msgid }}"
+          OLD_IDS=""
+          if [ -f .discord_message_ids ]; then
+            OLD_IDS=$(cat .discord_message_ids)
+          fi
 
-          # Read README.md content directly
-          SAFE_CONTENT=$(cat README.md)
-          # Wrap in triple backticks for Discord code block
-          JSON=$(jq -n --arg c "```${SAFE_CONTENT}```" '{ content: $c }')
-          echo "Payload for Discord: $JSON"
-
-          if [ -n "$OLD" ]; then
-            # attempt edit
-            RESP=$(curl -s -X PATCH \
-              -H "Content-Type: application/json" \
-              -d "$JSON" \
-              "$BASE/messages/$OLD")
-            echo "PATCH response: $RESP"
-            NEWID=$(echo "$RESP" | jq -r '.id // empty')
-            if [ -n "$NEWID" ]; then
-              echo "Edited existing message $NEWID"
-              echo "$NEWID" > .discord_message_id
-              echo "new_msgid=$NEWID" >> "$GITHUB_OUTPUT"
-              exit 0
+          # Split README.md into 1900-char chunks, preserving lines
+          CHUNKS=()
+          CHUNK=""
+          while IFS= read -r LINE; do
+            if [ $(( ${#CHUNK} + ${#LINE} + 1 )) -ge 1900 ]; then
+              CHUNKS+=("$CHUNK")
+              CHUNK="$LINE"
             else
-              echo "PATCH failed or message not found, will POST new"
+              if [ -z "$CHUNK" ]; then
+                CHUNK="$LINE"
+              else
+                CHUNK="$CHUNK"$'\n'"$LINE"
+              fi
             fi
+          done < README.md
+          # Add last chunk
+          if [ -n "$CHUNK" ]; then
+            CHUNKS+=("$CHUNK")
           fi
 
-          # fallback or first time: POST with wait=true so we get an id
-          RESP2=$(curl -s -X POST \
-            -H "Content-Type: application/json" \
-            -d "$JSON" \
-            "${BASE}?wait=true")
-          echo "POST response: $RESP2"
-          NEWID2=$(echo "$RESP2" | jq -r '.id // empty')
-          if [ -n "$NEWID2" ]; then
-            echo "Created new message $NEWID2"
-            echo "$NEWID2" > .discord_message_id
-            echo "new_msgid=$NEWID2" >> "$GITHUB_OUTPUT"
-            exit 0
-          else
-            echo "POST returned no message id; response was: $RESP2" >&2
-            # fallback: send as file if embed fails
-            curl -H "Content-Type: multipart/form-data" \
-              -F "file=@README.md;filename=README.md" \
-              -F "content=README (fallback file)" \
-              "$BASE"
-            exit 0
+          # Loop through chunks and post/patch as needed
+          NEW_IDS=()
+          OLD_IDS_ARR=()
+          IFS=$'\n' read -d '' -r -a OLD_IDS_ARR <<< "$OLD_IDS"
+          NUM_CHUNKS=${#CHUNKS[@]}
+          NUM_OLD=${#OLD_IDS_ARR[@]}
+
+          for IDX in $(seq 0 $((NUM_CHUNKS-1))); do
+            CHUNK="${CHUNKS[$IDX]}"
+            # Wrap in triple backticks for code formatting
+            JSON=$(jq -n --arg c "```${CHUNK}```" '{ content: $c }')
+            if [ $IDX -lt $NUM_OLD ] && [ -n "${OLD_IDS_ARR[$IDX]}" ]; then
+              MSGID="${OLD_IDS_ARR[$IDX]}"
+              # PATCH existing message
+              RESP=$(curl -s -X PATCH \
+                -H "Content-Type: application/json" \
+                -d "$JSON" \
+                "$BASE/messages/$MSGID")
+              NEWID=$(echo "$RESP" | jq -r '.id // empty')
+              if [ -n "$NEWID" ]; then
+                NEW_IDS+=("$NEWID")
+              else
+                # PATCH failed, POST as new
+                RESP=$(curl -s -X POST \
+                  -H "Content-Type: application/json" \
+                  -d "$JSON" \
+                  "${BASE}?wait=true")
+                NEWID=$(echo "$RESP" | jq -r '.id // empty')
+                NEW_IDS+=("$NEWID")
+              fi
+            else
+              # POST new message
+              RESP=$(curl -s -X POST \
+                -H "Content-Type: application/json" \
+                -d "$JSON" \
+                "${BASE}?wait=true")
+              NEWID=$(echo "$RESP" | jq -r '.id // empty')
+              NEW_IDS+=("$NEWID")
+            fi
+          done
+
+          # Delete any extra old messages (if README shrank)
+          if [ $NUM_OLD -gt $NUM_CHUNKS ]; then
+            for IDX in $(seq $NUM_CHUNKS $((NUM_OLD-1))); do
+              MSGID="${OLD_IDS_ARR[$IDX]}"
+              curl -s -X DELETE "$BASE/messages/$MSGID"
+            done
           fi
 
-      - name: Commit .discord_message_id if changed
-        if: steps.discord.outputs.new_msgid != ''
+          # Save new IDs
+          printf "%s\n" "${NEW_IDS[@]}" > .discord_message_ids
+          echo "new_msgids=$(IFS=,; echo "${NEW_IDS[*]}")" >> "$GITHUB_OUTPUT"
+
+      - name: Commit .discord_message_ids if changed
+        if: steps.discord.outputs.new_msgids != ''
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add .discord_message_id
-          git commit -m "Update Discord message ID" || echo "Nothing to commit"
+          git add .discord_message_ids
+          git commit -m "Update Discord message IDs" || echo "Nothing to commit"
           git push
