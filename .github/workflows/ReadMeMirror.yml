@@ -63,7 +63,7 @@ jobs:
           OLD="${{ steps.load.outputs.msgid }}"
 
           # Prepare JSON payload
-          JSON=$(jq -n --arg c "```$CONTENT```" '{ content: $c }')
+          JSON=$(jq -n --arg c "```$(printf '%s' \"$CONTENT\")```" '{ content: $c }')
           echo "Payload for Discord: $JSON"
 
           if [ -n "$OLD" ]; then
@@ -88,7 +88,7 @@ jobs:
           RESP2=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -d "$JSON" \
-            "$BASE")
+            "$BASE?wait=true")
           echo "POST response: $RESP2"
           NEWID2=$(echo "$RESP2" | jq -r '.id // empty')
           if [ -n "$NEWID2" ]; then
