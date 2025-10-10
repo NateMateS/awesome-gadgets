@@ -1,4 +1,4 @@
-name: Mirror README to Discord (live edit)
+name: Mirror README to Discord (edit if exists, fallback)
 
 on:
   push:
@@ -7,124 +7,108 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # allow commit / pushing a file (for storing message ID)
-  id-token: write    # optional, depending on how you want to store state
+  contents: write
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
         with:
-          persist-credentials: true  # so push back is authenticated
+          persist-credentials: true
 
-      - name: Read README content
+      - name: Read README
         id: read
         run: |
           if [ ! -f README.md ]; then
-            echo "::error::README.md not found"
+            echo "README.md not found" >&2
             exit 1
           fi
-          # Escape backticks so Discord triple-backtick blocks don't break
-          # This replaces ``` with `​`​` (i.e. zero-width spaces in between)  
-          CONTENT=$(sed 's/```/`​`​`/g' README.md)
-          echo "$CONTENT" > readme_content.txt
-          LENGTH=$(wc -c < readme_content.txt)
-          echo "::set-output name=length::$LENGTH"
-          # Cap stored content (just to avoid giant output issues)
-          TRIM=$(head -c 200000 readme_content.txt)
-          echo "::set-output name=content::$TRIM"
+          # escape triple backticks
+          ESCAPED=$(sed 's/```/`​`​`/g' README.md)
+          echo "content=$ESCAPED" >> "$GITHUB_OUTPUT"
+          LENGTH=$(wc -c < README.md)
+          echo "length=$LENGTH" >> "$GITHUB_OUTPUT"
 
-      - name: Prepare webhook URL parts
-        id: webhook_parts
+      - name: Parse webhook parts
+        id: wb
         run: |
-          # Split webhook URL into ID and TOKEN parts
-          # Example webhook: https://discord.com/api/webhooks/ID/TOKEN
           FULL="${{ secrets.DISCORD_WEBHOOK_URL }}"
-          # Extract the last two path segments
           WEBHOOK_ID=$(echo "$FULL" | awk -F'/' '{print $(NF-1)}')
           WEBHOOK_TOKEN=$(echo "$FULL" | awk -F'/' '{print $NF}')
-          echo "::set-output name=id::$WEBHOOK_ID"
-          echo "::set-output name=token::$WEBHOOK_TOKEN"
+          echo "id=$WEBHOOK_ID" >> "$GITHUB_OUTPUT"
+          echo "token=$WEBHOOK_TOKEN" >> "$GITHUB_OUTPUT"
 
-      - name: Load existing message ID (if any)
-        id: load_msgid
+      - name: Load existing message ID
+        id: load
         run: |
           if [ -f .discord_message_id ]; then
             MSGID=$(cat .discord_message_id)
-            echo "::set-output name=msgid::$MSGID"
+            echo "msgid=$MSGID" >> "$GITHUB_OUTPUT"
           else
-            echo "::set-output name=msgid::"
+            echo "msgid=" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Send or update Discord message
-        id: discord_post
+      - name: Post or patch message
+        id: discord
         run: |
-          WEBHOOK_ID=${{ steps.webhook_parts.outputs.id }}
-          WEBHOOK_TOKEN=${{ steps.webhook_parts.outputs.token }}
-          BASE_URL="https://discord.com/api/webhooks/${WEBHOOK_ID}/${WEBHOOK_TOKEN}"
-
+          set -e
+          BASE="https://discord.com/api/webhooks/${{ steps.wb.outputs.id }}/${{ steps.wb.outputs.token }}"
+          echo "Using webhook base: $BASE"
           CONTENT="${{ steps.read.outputs.content }}"
-          LENGTH=${{ steps.read.outputs.length }}
-          OLD_MSGID="${{ steps.load_msgid.outputs.msgid }}"
+          LEN="${{ steps.read.outputs.length }}"
+          OLD="${{ steps.load.outputs.msgid }}"
 
-          # Build JSON payload
-          # Here we wrap in triple backticks
-          PAYLOAD=$( jq -n --arg c "```$CONTENT```" '{ "content": $c }' )
+          # Prepare JSON payload
+          JSON=$(jq -n --arg c "```$CONTENT```" '{ content: $c }')
+          echo "Payload for Discord: $JSON"
 
-          if [ -n "$OLD_MSGID" ]; then
-            # Try PATCH (edit) existing message
+          if [ -n "$OLD" ]; then
+            # attempt edit
             RESP=$(curl -s -X PATCH \
               -H "Content-Type: application/json" \
-              -d "$PAYLOAD" \
-              "$BASE_URL/messages/$OLD_MSGID")
-            # If PATCH fails (say message deleted), fallback to POST
-            if echo "$RESP" | jq -e '.id' > /dev/null; then
-              echo "Edited message $OLD_MSGID"
-              echo "::set-output name=new_msgid::$OLD_MSGID"
+              -d "$JSON" \
+              "$BASE/messages/$OLD")
+            echo "PATCH response: $RESP"
+            NEWID=$(echo "$RESP" | jq -r '.id // empty')
+            if [ -n "$NEWID" ]; then
+              echo "Edited existing message $NEWID"
+              echo "$NEWID" > .discord_message_id
+              echo "new_msgid=$NEWID" >> "$GITHUB_OUTPUT"
+              exit 0
             else
-              # fallback to new POST
-              RESP2=$(curl -s -X POST \
-                -H "Content-Type: application/json" \
-                -d "$PAYLOAD" \
-                "$BASE_URL")
-              NEWID=$(echo "$RESP2" | jq -r '.id')
-              echo "Created new message $NEWID"
-              echo "::set-output name=new_msgid::$NEWID"
+              echo "PATCH failed or message not found, will POST new"
             fi
-          else
-            # No existing message -> send as new
-            RESP=$(curl -s -X POST \
-              -H "Content-Type: application/json" \
-              -d "$PAYLOAD" \
-              "$BASE_URL")
-            NEWID=$(echo "$RESP" | jq -r '.id')
-            echo "Created new message $NEWID"
-            echo "::set-output name=new_msgid::$NEWID"
           fi
 
-      - name: Fallback - send as file if too large
-        if: steps.read.outputs.length > 1900
-        run: |
-          BASE="$BASE_URL"
-          # Upload file instead (multipart/form-data)
-          curl -H "Content-Type: multipart/form-data" \
-            -F "file=@README.md;filename=README.md" \
-            -F "content=Latest README (too large to embed)" \
-            $BASE
+          # else fallback or first time
+          RESP2=$(curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -d "$JSON" \
+            "$BASE")
+          echo "POST response: $RESP2"
+          NEWID2=$(echo "$RESP2" | jq -r '.id // empty')
+          if [ -n "$NEWID2" ]; then
+            echo "Created new message $NEWID2"
+            echo "$NEWID2" > .discord_message_id
+            echo "new_msgid=$NEWID2" >> "$GITHUB_OUTPUT"
+            exit 0
+          else
+            echo "POST returned no message id; response was: $RESP2" >&2
+            # fallback: send as file if embed fails
+            curl -H "Content-Type: multipart/form-data" \
+              -F "file=@README.md;filename=README.md" \
+              -F "content=README (fallback file)" \
+              "$BASE"
+            exit 0
+          fi
 
-      - name: Persist message ID locally
-        if: steps.discord_post.outputs.new_msgid != ''
-        run: |
-          echo "${{ steps.discord_post.outputs.new_msgid }}" > .discord_message_id
-
-      - name: Commit message ID back (optional)
-        if: steps.discord_post.outputs.new_msgid != ''
+      - name: Commit .discord_message_id if changed
+        if: steps.discord.outputs.new_msgid != ''
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add .discord_message_id
-          git commit -m "Update Discord message ID" || echo "No changes to commit"
+          git commit -m "Update Discord message ID" || echo "Nothing to commit"
           git push
