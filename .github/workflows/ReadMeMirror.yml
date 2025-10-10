@@ -1,0 +1,39 @@
+name: Mirror README to Discord
+
+on:
+  push:
+    paths:
+      - "README.md"
+  workflow_dispatch:    # allows manually triggering
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Read README content
+        id: read_readme
+        run: |
+          # Ensure we have the README file; you could also choose a different path
+          if [ ! -f README.md ]; then
+            echo "README.md not found!"
+            exit 1
+          fi
+          # Escape triple backticks or other problematic content if needed
+          # Read entire file into a variable
+          CONTENT=$(sed 's/```/`​`​`/g' README.md)
+          # Output it as an action output (could be large)
+          echo "::set-output name=content::$CONTENT"
+
+      - name: Send to Discord
+        uses: tsickert/discord-webhook@v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          content: |
+            **README.md of ${{ github.repository }}**
+            ```
+            ${{ steps.read_readme.outputs.content }}
+            ```
