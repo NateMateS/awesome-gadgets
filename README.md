@@ -32,6 +32,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Github Copilot CLI** — https://github.com/github/copilot-cli
 * **Warp** — https://www.warp.dev/
 * **Augment** — https://www.augmentcode.com/product/CLI
+* **SourceGraph Amp (CLI)** — https://ampcode.com/
 
 ## Editors & IDEs
 
@@ -51,6 +52,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Rovo Dev** — https://support.atlassian.com/rovo/docs/work-with-rovo-dev-in-the-ide/
 * **Qodo Gen (Codium)** — https://marketplace.visualstudio.com/items?itemName=Codium.codium
 * **Refact.AI** — https://github.com/smallcloudai/refact
+* **SourceGraph Amp (Extension) — https://ampcode.com/
 
 ## Productivity & Utilities & Helpers
 
