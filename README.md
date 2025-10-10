@@ -29,6 +29,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Open-Code** — https://github.com/sst/opencode
 * **Rovo Dev** — https://support.atlassian.com/rovo/docs/use-rovo-dev-cli/
 * **Forge** — https://forgecode.dev/
+* **Github Copilot CLI** - https://github.com/github/copilot-cli
 
 ## Editors & IDEs
 
@@ -39,6 +40,7 @@ Categorized lists of found useful software, tools, helpers, things.
 ## VSCode Extensions
 
 * **Codex** — https://marketplace.visualstudio.com/items?itemName=openai.chatgpt
+* **Github Copilot** - https://github.com/microsoft/vscode-copilot-chat
 * **Continue** — https://github.com/continuedev/continue
 * **Cline** — https://github.com/cline/cline
 * **Kilo** — https://github.com/Kilo-Org/kilocode
