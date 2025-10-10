@@ -52,7 +52,7 @@ jobs:
             echo "msgid=" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Post or patch message
+            - name: Post or patch message
         id: discord
         run: |
           set -e
@@ -62,8 +62,10 @@ jobs:
           LEN="${{ steps.read.outputs.length }}"
           OLD="${{ steps.load.outputs.msgid }}"
 
-          # Prepare JSON payload
-          JSON=$(jq -n --arg c "```$(printf '%s' \"$CONTENT\")```" '{ content: $c }')
+          # Prepare JSON payload safely
+          # Use printf to avoid unexpected word splitting or shell interpretation
+          SAFE_CONTENT=$(printf "%s" "$CONTENT")
+          JSON=$(jq -n --arg c "```$SAFE_CONTENT```" '{ content: $c }')
           echo "Payload for Discord: $JSON"
 
           if [ -n "$OLD" ]; then
@@ -84,11 +86,11 @@ jobs:
             fi
           fi
 
-          # else fallback or first time
+          # fallback or first time: POST with wait=true so we get an id
           RESP2=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -d "$JSON" \
-            "$BASE?wait=true")
+            "${BASE}?wait=true")
           echo "POST response: $RESP2"
           NEWID2=$(echo "$RESP2" | jq -r '.id // empty')
           if [ -n "$NEWID2" ]; then
