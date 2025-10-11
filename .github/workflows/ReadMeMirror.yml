@@ -56,10 +56,10 @@ jobs:
         id: discord
         run: |
           set -euo pipefail
-          
+
           BASE="https://discord.com/api/webhooks/${{ steps.wb.outputs.id }}/${{ steps.wb.outputs.token }}"
-          
-          # Load old message IDs and delete them
+
+          # Delete previous messages
           if [ -f .discord_message_ids ]; then
             echo "Deleting previous Discord messages..."
             while IFS= read -r MSGID; do
@@ -69,70 +69,66 @@ jobs:
               fi
             done < .discord_message_ids
           fi
-          
-          # Read README safely
+
+          # Read README
           if [ ! -f README.md ]; then
-            echo "ERROR: README.md not found!"
+            echo "ERROR: README.md not found!" >&2
             exit 2
           fi
-          CONTENT=$(cat README.md)
-          
-          # Split README by top-level headers: lines starting with "# "
-          # This uses awk to group content under each "# Header"
-          mapfile -t SECTIONS < <(
-            awk '
-              BEGIN { section = "" }
-              /^# / {
-                if (section != "") print section
-                section = $0
-                next
-              }
-              { 
-                if (section != "") section = section "\n" $0
-                else section = $0  # in case file doesn't start with #
-              }
-              END { if (section != "") print section }
-            ' README.md
-          )
-          
-          echo "Split README into ${#SECTIONS[@]} header sections."
-          
+
+          # Split README by top-level headers (# ...)
+          SECTIONS=()
+          CURRENT=""
+          while IFS= read -r LINE || [[ -n "$LINE" ]]; do
+            if [[ "$LINE" =~ ^#\ [^#] ]]; then
+              if [[ -n "$CURRENT" ]]; then
+                SECTIONS+=("$CURRENT")
+              fi
+              CURRENT="$LINE"
+            else
+              if [[ -n "$CURRENT" ]]; then
+                CURRENT="$CURRENT"$'\n'"$LINE"
+              else
+                CURRENT="$LINE"
+              fi
+            fi
+          done < README.md
+
+          if [[ -n "$CURRENT" ]]; then
+            SECTIONS+=("$CURRENT")
+          fi
+
+          echo "Split README into ${#SECTIONS[@]} sections."
+
           NEW_IDS=()
           for SECTION in "${SECTIONS[@]}"; do
-            # Skip empty or whitespace-only sections
-            TRIMMED=$(echo "$SECTION" | tr -d '[:space:]')
-            if [ -z "$TRIMMED" ]; then
+            # Skip whitespace-only
+            if [[ -z "$(echo "$SECTION" | tr -d '[:space:]')" ]]; then
               continue
             fi
-            
-            # Escape triple backticks to prevent breaking Discord code blocks
+
+            # Escape triple backticks
             ESCAPED=$(echo "$SECTION" | sed 's/```/`​`​`/g')
-            
-            # Wrap in code block for formatting
+
             JSON=$(jq -c -n --arg c "```${ESCAPED}```" '{ content: $c }')
-            
             echo "Posting section (length: ${#ESCAPED})..."
-            echo "Preview:"
-            echo "$SECTION" | head -n 3 | sed 's/^/  /'
-            
+
             RESP=$(curl -s -X POST \
               -H "Content-Type: application/json" \
               -d "$JSON" \
               "${BASE}?wait=true")
-              
-            echo "Discord POST response: $RESP"
+
             NEWID=$(echo "$RESP" | jq -r '.id // empty')
-            if [ -z "$NEWID" ]; then
-              echo "ERROR: Failed to post section. Response: $RESP"
+            if [[ -z "$NEWID" ]]; then
+              echo "ERROR: Failed to post section. Response: $RESP" >&2
               exit 11
             fi
             NEW_IDS+=("$NEWID")
           done
-          
-          # Save new message IDs
+
           printf "%s\n" "${NEW_IDS[@]}" > .discord_message_ids
           echo "new_msgids=$(IFS=,; echo "${NEW_IDS[*]}")" >> "$GITHUB_OUTPUT"
-          
+
           echo "All sections posted successfully!"
 
       - name: Commit .discord_message_ids if changed
