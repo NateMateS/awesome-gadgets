@@ -70,48 +70,48 @@ jobs:
             done < .discord_message_ids
           fi
 
-          # Read README
           if [ ! -f README.md ]; then
             echo "ERROR: README.md not found!" >&2
             exit 2
           fi
 
-          # Split README by top-level headers (# ...)
-          SECTIONS=()
-          CURRENT=""
-          while IFS= read -r LINE || [[ -n "$LINE" ]]; do
-            if [[ "$LINE" =~ ^#\ [^#] ]]; then
-              if [[ -n "$CURRENT" ]]; then
-                SECTIONS+=("$CURRENT")
-              fi
-              CURRENT="$LINE"
-            else
-              if [[ -n "$CURRENT" ]]; then
-                CURRENT="$CURRENT"$'\n'"$LINE"
-              else
-                CURRENT="$LINE"
-              fi
-            fi
-          done < README.md
+          # Split README by top-level headers using safe method
+          SECTIONS_FILE=$(mktemp)
+          awk '
+            BEGIN { section = "" }
+            /^# [^#]/ {
+              if (section != "") print section
+              section = $0
+              next
+            }
+            {
+              if (section == "") section = $0
+              else section = section "\n" $0
+            }
+            END { if (section != "") print section }
+          ' README.md > "$SECTIONS_FILE"
 
-          if [[ -n "$CURRENT" ]]; then
-            SECTIONS+=("$CURRENT")
-          fi
-
-          echo "Split README into ${#SECTIONS[@]} sections."
+          # Count sections
+          NUM_SECTIONS=$(wc -l < "$SECTIONS_FILE")
+          echo "Split README into $NUM_SECTIONS sections."
 
           NEW_IDS=()
-          for SECTION in "${SECTIONS[@]}"; do
-            # Skip whitespace-only
-            if [[ -z "$(echo "$SECTION" | tr -d '[:space:]')" ]]; then
+          while IFS= read -r -d '' SECTION; do
+            # Skip if empty or whitespace
+            if [ -z "$(printf '%s' "$SECTION" | tr -d '[:space:]')" ]; then
               continue
             fi
 
             # Escape triple backticks
-            ESCAPED=$(echo "$SECTION" | sed 's/```/`​`​`/g')
+            ESCAPED=$(printf '%s' "$SECTION" | sed 's/```/`​`​`/g')
 
-            JSON=$(jq -c -n --arg c "```${ESCAPED}```" '{ content: $c }')
-            echo "Posting section (length: ${#ESCAPED})..."
+            # Build JSON safely
+            printf '%s' "$ESCAPED" > /tmp/discord_section.txt
+            JSON=$(jq -c --rawfile c /tmp/discord_section.txt '{ content: "```\($c)```" }')
+
+            # Debug: safe length print (NO content interpolation)
+            LEN=$(printf '%s' "$ESCAPED" | wc -c)
+            echo "Posting section (length: $LEN)..."
 
             RESP=$(curl -s -X POST \
               -H "Content-Type: application/json" \
@@ -119,12 +119,14 @@ jobs:
               "${BASE}?wait=true")
 
             NEWID=$(echo "$RESP" | jq -r '.id // empty')
-            if [[ -z "$NEWID" ]]; then
+            if [ -z "$NEWID" ]; then
               echo "ERROR: Failed to post section. Response: $RESP" >&2
+              echo "Section content (first 200 chars):"
+              printf '%s' "$SECTION" | cut -c1-200
               exit 11
             fi
             NEW_IDS+=("$NEWID")
-          done
+          done < <(awk '{print}' ORS='\0' "$SECTIONS_FILE")
 
           printf "%s\n" "${NEW_IDS[@]}" > .discord_message_ids
           echo "new_msgids=$(IFS=,; echo "${NEW_IDS[*]}")" >> "$GITHUB_OUTPUT"
