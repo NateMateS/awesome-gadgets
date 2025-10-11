@@ -136,6 +136,9 @@ jobs:
 
             NEWID=$(echo "$RESP" | jq -r '.id')
             NEW_IDS+=("$NEWID")
+            
+            # 1-second delay to avoid rate limits
+            sleep 1
           done
 
           printf "%s\n" "${NEW_IDS[@]}" > .discord_message_ids
