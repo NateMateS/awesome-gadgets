@@ -69,10 +69,11 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Repo Prompt (MAC ONLY!)** — https://repoprompt.com/
 * **DeepWiki** — https://deepwiki.org/
 * **DeepWiki MD Export** — https://github.com/zxmfke/deepwiki-md-chrome-extension
-* 
+* **Huly** — https://huly.io/
 
 ## Experimental / Other
 
+* **openevolve (Open-Source AlphaEvolve)** — https://github.com/codelion/openevolve
 * Prototypes, research, one-off experiments, and wild ideas here?
 
 ---
