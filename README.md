@@ -10,9 +10,12 @@ Categorized lists of found useful software, tools, helpers, things.
 
 ## Table of contents
 
+* [Web Builders](#web-builders)
+* [Self-Host Frameworks (Sometimes +Cloud)](#self-host-frameworks)
 * [CLI Tools](#cli-tools)
 * [Editors & IDEs](#editors--ides)
 * [VSCode Extensions](#vscode-extensions)
+* [Web Interfaces](#web-interfaces)
 * [Productivity & Utilities & Helpers](#productivity--utilities--helpers)
 * [Experimental / Other](#experimental--other)
 * [Contributing](#contributing)
@@ -22,6 +25,13 @@ Categorized lists of found useful software, tools, helpers, things.
 ## Web Builders
 * **Lovable** — https://lovable.dev/
 * **Chef** — https://chef.convex.dev/
+* **v0** — https://v0.app/
+* **Manus** — https://manus.im/
+
+## Self-Host Frameworks
+* **OpenHands** — https://github.com/All-Hands-AI/OpenHands
+* **Goose** — https://github.com/block/goose
+* **OpenManus** — https://github.com/FoundationAgents/OpenManus
 
 ## CLI Tools
 
@@ -64,6 +74,15 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Cubent** — https://cubent.dev/
 * **Superdesign** — https://www.superdesign.dev/
 
+## Web Interfaces
+
+* **LMArena** — https://lmarena.ai/
+* **ChatGPT** — https://chatgpt.com/
+* **Anthropic** — https://claude.ai/new
+* **Qwen** — https://chat.qwen.ai/
+* **Kimi** — https://www.kimi.com/
+* **Z (GLM Models)** — https://chat.z.ai/
+
 ## Productivity & Utilities & Helpers
 
 * **Repo Prompt (MAC ONLY!)** — https://repoprompt.com/
@@ -82,7 +101,6 @@ Categorized lists of found useful software, tools, helpers, things.
 
 1. Fork this repo
 2. Add entries (or otherwise modify existing ones) under the proper category with:
-
    * **Name** — Link to site/GitHub
    * **Short description** (1–2 lines)
    * **Tags** (e.g., `cli`, `ai`, `editor`, `model`, `experimental`)
