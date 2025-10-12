@@ -118,32 +118,41 @@ jobs:
               CLEAN="${CLEAN:0:1990}…"
             fi
 
-            # Build JSON with raw Markdown (no code block!)
             JSON=$(jq -cn --arg c "$CLEAN" '{ content: $c }')
 
             echo "Posting section (length: ${#CLEAN})..."
 
-            RESP=$(curl -s -X POST \
-              -H "Content-Type: application/json" \
-              -d "$JSON" \
-              "${BASE}?wait=true")
+            ATTEMPTS=0
+            while :; do
+              RESP=$(curl -s -X POST \
+                -H "Content-Type: application/json" \
+                -d "$JSON" \
+                "${BASE}?wait=true")
 
-            if ! echo "$RESP" | jq -e '.id?' >/dev/null 2>&1; then
-              echo "ERROR: Discord rejected message. Response: $RESP" >&2
-              echo "Preview (first 100 chars): $(printf '%s' "$SECTION" | cut -c1-100)"
-              exit 11
-            fi
-
-            NEWID=$(echo "$RESP" | jq -r '.id')
-            NEW_IDS+=("$NEWID")
-            
-            # 1-second delay to avoid rate limits
-            sleep 1
+              if echo "$RESP" | jq -e '.id?' >/dev/null 2>&1; then
+                # Success
+                NEWID=$(echo "$RESP" | jq -r '.id')
+                NEW_IDS+=("$NEWID")
+                break
+              elif echo "$RESP" | jq -e '.message? | contains("rate limited")' >/dev/null; then
+                RETRY=$(echo "$RESP" | jq -r '.retry_after // 1')
+                echo "Rate limited by Discord. Waiting $RETRY seconds before retrying..."
+                sleep "$RETRY"
+                ATTEMPTS=$((ATTEMPTS+1))
+                if (( ATTEMPTS > 5 )); then
+                  echo "ERROR: Rate limited too many times, aborting." >&2
+                  exit 12
+                fi
+              else
+                echo "ERROR: Discord rejected message. Response: $RESP" >&2
+                echo "Preview (first 100 chars): $(printf '%s' "$SECTION" | cut -c1-100)"
+                exit 11
+              fi
+            done
           done
 
           printf "%s\n" "${NEW_IDS[@]}" > .discord_message_ids
           echo "new_msgids=$(IFS=,; echo "${NEW_IDS[*]}")" >> "$GITHUB_OUTPUT"
-
           echo "✅ Successfully posted ${#NEW_IDS[@]} messages to Discord."
 
       - name: Commit .discord_message_ids if changed
