@@ -18,6 +18,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * [Web Interfaces](#web-interfaces)
 * [Productivity & Utilities & Helpers](#productivity--utilities--helpers)
 * [Experimental / Other](#experimental--other)
+* [Benchmarks](#benchmarks)
 * [Contributing](#contributing)
 
 ---
@@ -32,6 +33,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **OpenHands** — https://github.com/All-Hands-AI/OpenHands
 * **Goose** — https://github.com/block/goose
 * **OpenManus** — https://github.com/FoundationAgents/OpenManus
+* **AgentOrchestra** — https://skyworkai.github.io/DeepResearchAgent/
 
 ## CLI Tools
 
@@ -49,6 +51,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Augment** — https://www.augmentcode.com/product/CLI
 * **SourceGraph Amp (CLI)** — https://ampcode.com/
 * **Codebuff** — https://www.codebuff.com/
+* **Octofriend** — https://github.com/synthetic-lab/octofriend
 
 ## Editors & IDEs
 
@@ -82,18 +85,31 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Qwen** — https://chat.qwen.ai/
 * **Kimi** — https://www.kimi.com/
 * **Z (GLM Models)** — https://chat.z.ai/
+* **(Mistral) Le Chat** — https://mistral.ai/products/le-chat
 
 ## Productivity & Utilities & Helpers
 
 * **Repo Prompt (MAC ONLY!)** — https://repoprompt.com/
 * **DeepWiki** — https://deepwiki.org/
 * **DeepWiki MD Export** — https://github.com/zxmfke/deepwiki-md-chrome-extension
+* **DeepWiki Open (Open-Source, Third Party) — https://github.com/AsyncFuncAI/deepwiki-open
+* **Exa-MCP** — https://github.com/exa-labs/exa-mcp-server
+* **Github Spec-Kit** — https://github.com/github/spec-kit
+* **Plane** — https://github.com/makeplane/plane
 * **Huly** — https://huly.io/
 
 ## Experimental / Other
 
 * **openevolve (Open-Source AlphaEvolve)** — https://github.com/codelion/openevolve
 * Prototypes, research, one-off experiments, and wild ideas here?
+
+## Benchmarks
+
+* **LMArena** — https://lmarena.ai/leaderboard
+* **GAIA** — https://huggingface.co/spaces/gaia-benchmark/leaderboard
+* **LiveBench** — https://livebench.ai/#/
+* **SWEBench** — https://www.swebench.com/
+* **OpenASR** — https://huggingface.co/spaces/hf-audio/open_asr_leaderboard
 
 ---
 
