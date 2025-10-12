@@ -92,7 +92,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Repo Prompt (MAC ONLY!)** — https://repoprompt.com/
 * **DeepWiki** — https://deepwiki.org/
 * **DeepWiki MD Export** — https://github.com/zxmfke/deepwiki-md-chrome-extension
-* **DeepWiki Open (Open-Source, Third Party) — https://github.com/AsyncFuncAI/deepwiki-open
+* **DeepWiki Open (Open-Source, Third Party)** — https://github.com/AsyncFuncAI/deepwiki-open
 * **Exa-MCP** — https://github.com/exa-labs/exa-mcp-server
 * **Github Spec-Kit** — https://github.com/github/spec-kit
 * **Plane** — https://github.com/makeplane/plane
