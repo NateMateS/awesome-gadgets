@@ -33,7 +33,9 @@ Categorized lists of found useful software, tools, helpers, things.
 * **OpenHands** — https://github.com/All-Hands-AI/OpenHands
 * **Goose** — https://github.com/block/goose
 * **OpenManus** — https://github.com/FoundationAgents/OpenManus
+* **AgentZero (A0)** — https://github.com/agent0ai/agent-zero
 * **AgentOrchestra** — https://skyworkai.github.io/DeepResearchAgent/
+* **RA.Aid** — https://github.com/ai-christianson/RA.Aid
 
 ## CLI Tools
 
@@ -82,6 +84,8 @@ Categorized lists of found useful software, tools, helpers, things.
 * **LMArena** — https://lmarena.ai/
 * **ChatGPT** — https://chatgpt.com/
 * **Anthropic** — https://claude.ai/new
+* **Google AI Studio** — https://aistudio.google.com/prompts/new_chat
+* **Gemini** — https://gemini.google.com/app
 * **Qwen** — https://chat.qwen.ai/
 * **Kimi** — https://www.kimi.com/
 * **Z (GLM Models)** — https://chat.z.ai/
@@ -90,6 +94,7 @@ Categorized lists of found useful software, tools, helpers, things.
 ## Productivity & Utilities & Helpers
 
 * **Repo Prompt (MAC ONLY!)** — https://repoprompt.com/
+* **PasteMax** — https://github.com/kleneway/pastemax
 * **DeepWiki** — https://deepwiki.org/
 * **DeepWiki MD Export** — https://github.com/zxmfke/deepwiki-md-chrome-extension
 * **DeepWiki Open (Open-Source, Third Party)** — https://github.com/AsyncFuncAI/deepwiki-open
@@ -97,6 +102,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Github Spec-Kit** — https://github.com/github/spec-kit
 * **Plane** — https://github.com/makeplane/plane
 * **Huly** — https://huly.io/
+* **Linear** — https://linear.app/
 
 ## Experimental / Other
 
@@ -109,6 +115,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **GAIA** — https://huggingface.co/spaces/gaia-benchmark/leaderboard
 * **LiveBench** — https://livebench.ai/#/
 * **SWEBench** — https://www.swebench.com/
+* **Context Arena** — https://contextarena.ai/
 * **OpenASR** — https://huggingface.co/spaces/hf-audio/open_asr_leaderboard
 
 ---
