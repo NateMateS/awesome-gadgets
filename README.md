@@ -100,7 +100,7 @@ Categorized lists of found useful software, tools, helpers, things.
 
 ## Experimental / Other
 
-* **openevolve (Open-Source AlphaEvolve)** — https://github.com/codelion/openevolve
+* **OpenEvolve (Open-Source AlphaEvolve)** — https://github.com/codelion/openevolve
 * Prototypes, research, one-off experiments, and wild ideas here?
 
 ## Benchmarks
@@ -117,8 +117,6 @@ Categorized lists of found useful software, tools, helpers, things.
 
 1. Fork this repo
 2. Add entries (or otherwise modify existing ones) under the proper category with:
-   * **Name** — Link to site/GitHub
-   * **Short description** (1–2 lines)
-   * **Tags** (e.g., `cli`, `ai`, `editor`, `model`, `experimental`)
-   * **License/Author** (if known)
+   * **Name** — Product/Full-Cover name (Plane as product/Anthropic as provider of their models)
+   * **Link** — Logical entry point. Prioritize Github Repository if Open-Source; otherwise try to use a direct (if no auth necessary to view) or a "guiding" link that leads to the intended entry item (usually its product page).
 3. Submit a PR with a short changelog entry in the PR description.
