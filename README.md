@@ -60,6 +60,8 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Cursor** — https://cursor.com/home
 * **Windsurf** — https://windsurf.com/
 * **Trae** — https://www.trae.ai/
+* **Zed (Win ver glitchy)** — https://zed.dev/
+* **Void** — https://voideditor.com/
 
 ## VSCode Extensions
 
