@@ -64,7 +64,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Trae** — https://www.trae.ai/
 * **Zed (Win ver glitchy)** — https://zed.dev/
 * **Void** — https://voideditor.com/
-* **Alibaba Qoder** — https://qoder.com/
+* **Qoder (Bright Zenith)** — https://qoder.com/
 * **Kiro** — https://kiro.dev/
 * **PearAI** — https://trypear.ai/
 
