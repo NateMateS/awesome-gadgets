@@ -53,6 +53,8 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Augment** — https://www.augmentcode.com/product/CLI
 * **SourceGraph Amp (CLI)** — https://ampcode.com/
 * **Codebuff** — https://www.codebuff.com/
+* **OB-1** — https://www.openblocklabs.com/
+* **Ante (Antigma)** — https://antigma.ai/
 * **Octofriend** — https://github.com/synthetic-lab/octofriend
 
 ## Editors & IDEs
@@ -62,6 +64,9 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Trae** — https://www.trae.ai/
 * **Zed (Win ver glitchy)** — https://zed.dev/
 * **Void** — https://voideditor.com/
+* **Alibaba Qoder** — https://qoder.com/
+* **Kiro** — https://kiro.dev/
+* **PearAI** — https://trypear.ai/
 
 ## VSCode Extensions
 
@@ -102,6 +107,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **DeepWiki Open (Open-Source, Third Party)** — https://github.com/AsyncFuncAI/deepwiki-open
 * **Exa-MCP** — https://github.com/exa-labs/exa-mcp-server
 * **Github Spec-Kit** — https://github.com/github/spec-kit
+* **OpenSpec** — https://github.com/Fission-AI/OpenSpec/
 * **Plane** — https://github.com/makeplane/plane
 * **Huly** — https://huly.io/
 * **Linear** — https://linear.app/
