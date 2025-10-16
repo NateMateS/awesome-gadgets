@@ -124,6 +124,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **LiveBench** — https://livebench.ai/#/
 * **SWEBench** — https://www.swebench.com/
 * **Context Arena** — https://contextarena.ai/
+* **Repo Bench (RepoPrompt)** — https://repoprompt.com/bench
 * **OpenASR** — https://huggingface.co/spaces/hf-audio/open_asr_leaderboard
 
 ---
