@@ -56,6 +56,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **OB-1** — https://www.openblocklabs.com/
 * **Ante (Antigma)** — https://antigma.ai/
 * **Octofriend** — https://github.com/synthetic-lab/octofriend
+* **pi-coding-agent** — https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent
 
 ## Editors & IDEs
 
@@ -67,6 +68,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Qoder (Bright Zenith)** — https://qoder.com/
 * **Kiro** — https://kiro.dev/
 * **PearAI** — https://trypear.ai/
+* **Antigravity** — https://antigravity.google/
 
 ## VSCode Extensions
 
