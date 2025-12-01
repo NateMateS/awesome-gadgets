@@ -110,6 +110,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Exa-MCP** — https://github.com/exa-labs/exa-mcp-server
 * **Github Spec-Kit** — https://github.com/github/spec-kit
 * **OpenSpec** — https://github.com/Fission-AI/OpenSpec/
+* **Gemini 3 GH-Copilot Proxy** — https://github.com/Apothic-AI/gemini-3-github-copilot-proxy
 * **Plane** — https://github.com/makeplane/plane
 * **Huly** — https://huly.io/
 * **Linear** — https://linear.app/
