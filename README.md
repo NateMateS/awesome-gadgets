@@ -67,7 +67,6 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Void** — https://voideditor.com/
 * **Qoder (Bright Zenith)** — https://qoder.com/
 * **Kiro** — https://kiro.dev/
-* **PearAI** — https://trypear.ai/
 * **Antigravity** — https://antigravity.google/
 
 ## VSCode Extensions
