@@ -28,6 +28,9 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Chef** — https://chef.convex.dev/
 * **v0** — https://v0.app/
 * **Manus** — https://manus.im/
+* **Bolt.new** — https://bolt.new/
+* **Replit Agent** — https://replit.com/
+* **Create.xyz** — https://www.create.xyz/
 
 ## Self-Host Frameworks
 * **OpenHands** — https://github.com/All-Hands-AI/OpenHands
@@ -36,6 +39,20 @@ Categorized lists of found useful software, tools, helpers, things.
 * **AgentZero (A0)** — https://github.com/agent0ai/agent-zero
 * **AgentOrchestra** — https://skyworkai.github.io/DeepResearchAgent/
 * **RA.Aid** — https://github.com/ai-christianson/RA.Aid
+* **OpAgent** —https://github.com/codefuse-ai/OpAgent
+* **Ollama** — https://github.com/ollama/ollama
+* **LM Studio** — https://lmstudio.ai/
+* **Browser Use** — https://github.com/browser-use/browser-use
+* **Smolagents** — https://github.com/huggingface/smolagents
+* **CrewAI** — https://github.com/crewAIInc/crewAI
+* **Mastra** — https://github.com/mastra-ai/mastra
+* **PydanticAI** — https://github.com/pydantic/pydantic-ai
+* **LangGraph** — https://github.com/langchain-ai/langgraph
+* **AutoGen** — https://github.com/microsoft/autogen
+* **Phidata** — https://github.com/phidatahq/phidata
+* **Open WebUI** — https://github.com/open-webui/open-webui
+* **AnythingLLM** — https://github.com/Mintplex-Labs/anything-llm
+* **TypingMind** — https://www.typingmind.com/
 
 ## CLI Tools
 
@@ -57,6 +74,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Ante (Antigma)** — https://antigma.ai/
 * **Octofriend** — https://github.com/synthetic-lab/octofriend
 * **pi-coding-agent** — https://github.com/badlogic/pi-mono/tree/main/packages/coding-agent
+* **Fabric** — https://github.com/danielmiessler/fabric
 
 ## Editors & IDEs
 
@@ -68,6 +86,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Qoder (Bright Zenith)** — https://qoder.com/
 * **Kiro** — https://kiro.dev/
 * **Antigravity** — https://antigravity.google/
+* **Firebase Studio (Project IDX)** — https://studio.firebase.google.com/
 
 ## VSCode Extensions
 
@@ -86,6 +105,7 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Zencoder** — https://zencoder.ai/
 * **Cubent** — https://cubent.dev/
 * **Superdesign** — https://www.superdesign.dev/
+* **Bito** — https://marketplace.visualstudio.com/items?itemName=Bito.Bito
 
 ## Web Interfaces
 
@@ -98,6 +118,12 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Kimi** — https://www.kimi.com/
 * **Z (GLM Models)** — https://chat.z.ai/
 * **(Mistral) Le Chat** — https://mistral.ai/products/le-chat
+* **DeepSeek** — https://chat.deepseek.com/
+* **Perplexity** — https://www.perplexity.ai/
+* **HuggingChat** — https://huggingface.co/chat/
+* **Grok** — https://x.com/i/grok
+* **LobeChat** — https://github.com/lobehub/lobe-chat
+* **Venice** — https://venice.ai/
 
 ## Productivity & Utilities & Helpers
 
@@ -113,6 +139,10 @@ Categorized lists of found useful software, tools, helpers, things.
 * **Plane** — https://github.com/makeplane/plane
 * **Huly** — https://huly.io/
 * **Linear** — https://linear.app/
+* **Raycast** — https://www.raycast.com/
+* **Pieces for Developers** — https://pieces.app/
+* **Smithery (MCP Registry)** — https://smithery.ai/
+* **DevPod** — https://github.com/loft-sh/devpod
 
 ## Experimental / Other
 
@@ -123,6 +153,7 @@ Categorized lists of found useful software, tools, helpers, things.
 
 * **LMArena** — https://lmarena.ai/leaderboard
 * **GAIA** — https://huggingface.co/spaces/gaia-benchmark/leaderboard
+* **Scale Labs** — https://labs.scale.com/leaderboard
 * **LiveBench** — https://livebench.ai/#/
 * **SWEBench** — https://www.swebench.com/
 * **Context Arena** — https://contextarena.ai/
